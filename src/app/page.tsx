@@ -60,7 +60,7 @@ const Nav = () => {
 
 // Hero Section - GOALS style with image showing through text
 const Hero = () => {
-  const imageUrl = 'images/picture.png';
+  const imageUrl = `${basePath}/images/picture.png`;
 
   return (
     <section className="h-screen relative overflow-hidden">
@@ -444,7 +444,7 @@ const Projects = () => {
       tech: ["Next.js", "TypeScript", "Ethers.js", "viem", "wagmi", "Tailwind CSS"],
       size: "large",
       url: "https://evm.fate.stability.nexus/",
-      image: "/images/fate.png",
+      image: `${basePath}/images/fate.png`,
     },
     {
       id: "02",
@@ -454,7 +454,7 @@ const Projects = () => {
       tech: ["FastAPI", "React", "GCP", "Google Gemini AI", "Firebase", "Tailwind CSS"],
       size: "medium",
       url: "https://investai-genai.web.app/",
-      image: "/images/investai.png",
+      image: `${basePath}/images/investai.png`,
     },
     {
       id: "03",
@@ -464,7 +464,7 @@ const Projects = () => {
       tech: ["React", "Firebase", "Firestore", "Cloud Functions", "Tailwind CSS"],
       size: "medium",
       url: "https://prosperdevelopers.com/",
-      image: "/images/prosper.png",
+      image: `${basePath}/images/prosper.png`,
     },
     {
       id: "04",
@@ -474,7 +474,7 @@ const Projects = () => {
       tech: ["Next.js", "Radix UI", "Tailwind CSS", "TypeScript"],
       size: "medium",
       url: "https://clowder.stability.nexus/",
-      image: "/images/clowder.png",
+      image: `${basePath}/images/clowder.png`,
     },
   ];
 
@@ -507,9 +507,6 @@ const Projects = () => {
                 width={1200}
                 height={800}
                 className="w-full h-auto object-contain group-hover:scale-110 transition-transform duration-700"
-                onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-                  e.currentTarget.style.display = 'none';
-                }}
               />
             </div>
             
@@ -564,9 +561,6 @@ const Projects = () => {
                   width={800}
                   height={600}
                   className="w-full h-auto object-contain group-hover:scale-110 transition-transform duration-700"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                  }}
                 />
               </div>
               
