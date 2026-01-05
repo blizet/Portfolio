@@ -3,6 +3,9 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
+// Base path for GitHub Pages - matches next.config.ts
+const basePath = '/Portfolio';
+
 // Simple icons
 const Arrow = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -57,7 +60,7 @@ const Nav = () => {
 
 // Hero Section - GOALS style with image showing through text
 const Hero = () => {
-  const imageUrl = '/images/picture.png';
+  const imageUrl = `${basePath}/images/picture.png`;
 
   return (
     <section className="h-screen relative overflow-hidden">
@@ -1109,11 +1112,11 @@ export default function Home() {
   useEffect(() => {
     // List of all image URLs that need to be loaded
     const imageUrls = [
-      '/images/picture.png',
-      '/images/fate.png',
-      '/images/investai.png',
-      '/images/prosper.png',
-      '/images/clowder.png',
+      `${basePath}/images/picture.png`,
+      `${basePath}/images/fate.png`,
+      `${basePath}/images/investai.png`,
+      `${basePath}/images/prosper.png`,
+      `${basePath}/images/clowder.png`,
     ];
 
     let loadedCount = 0;
