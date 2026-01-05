@@ -96,11 +96,11 @@ const Hero = () => {
         </div>
 
         {/* Large ANJALI text - shares same fixed background as main image */}
-        <div className="absolute inset-0 flex items-end justify-center" style={{ bottom: '-1px' }}>
+        <div className="absolute inset-0 flex items-end justify-center overflow-visible" style={{ bottom: '-1px' }}>
           <h1 
-            className="font-black select-none text-center w-[90%] relative"
+            className="font-black select-none text-center w-full max-w-[95%] px-2 relative overflow-visible"
             style={{
-              fontSize: 'clamp(100px, 28vw, 350px)',
+              fontSize: 'clamp(80px, 25vw, 350px)',
               letterSpacing: '-0.02em',
               lineHeight: 0.805,
               backgroundImage: `url(${imageUrl})`,
@@ -689,10 +689,10 @@ const Awards = () => {
   };
 
   return (
-    <section className="py-40 md:py-48 px-8 md:px-16 lg:px-24 bg-gray-100">
+    <section className="py-40 md:py-48 px-4 sm:px-8 md:px-16 lg:px-24 bg-gray-100 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         {/* Section header */}
-        <div className="flex items-baseline gap-4 mb-24">
+        <div className="flex items-baseline gap-4 mb-24 px-2 sm:px-0">
           <span className="font-mono text-sm text-gray-400">006</span>
           <h2 className="text-sm font-mono tracking-widest text-gray-400">
             RECOGNITION
@@ -701,7 +701,7 @@ const Awards = () => {
         </div>
         
         {/* Awards list */}
-        <div className="space-y-0">
+        <div className="space-y-0 overflow-x-hidden">
           {awards.map((award, i) => {
             const isOpen = openIndex === i;
             return (
@@ -711,23 +711,26 @@ const Awards = () => {
               >
                 <div 
                   onClick={() => toggleAward(i)}
-                  className="flex items-center gap-8 md:gap-12 py-10 md:py-12 px-4 hover:pl-6 transition-all duration-300 cursor-pointer"
+                  className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 md:gap-8 lg:gap-12 py-6 sm:py-8 md:py-10 lg:py-12 px-4 sm:px-6 hover:pl-4 sm:hover:pl-6 transition-all duration-300 cursor-pointer"
                 >
-                  <span className="font-mono text-sm text-gray-400 w-20 shrink-0">
+                  <span className="font-mono text-sm text-gray-400 w-16 sm:w-20 shrink-0">
                     {award.year}
                   </span>
-                  <h3 className="text-xl md:text-2xl font-bold flex-1">{award.title}</h3>
-                  <span className="font-mono text-sm text-gray-400 shrink-0">{award.org}</span>
-                  <div className={`w-6 h-6 flex items-center justify-center shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-45' : ''}`}>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-lg sm:text-xl md:text-2xl font-bold break-words">{award.title}</h3>
+                    <span className="font-mono text-xs text-gray-400 sm:hidden mt-1 block">{award.org}</span>
+                  </div>
+                  <span className="font-mono text-xs sm:text-sm text-gray-400 shrink-0 hidden sm:inline">{award.org}</span>
+                  <div className={`w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-45' : ''}`}>
                     <Plus />
                   </div>
                 </div>
                 
                 {/* Additional info on click */}
                 <div className={`overflow-hidden transition-all duration-500 ease-in-out ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-                  <div className="px-4 pb-8 md:pb-10 pt-4">
-                    <div className="pl-20 md:pl-0">
-                      <p className="text-gray-500 text-base md:text-lg leading-relaxed max-w-3xl">
+                  <div className="px-4 sm:px-6 pb-6 sm:pb-8 md:pb-10 pt-4">
+                    <div className="pl-0 sm:pl-16 md:pl-20 lg:pl-24">
+                      <p className="text-gray-500 text-sm sm:text-base md:text-lg leading-relaxed max-w-3xl break-words">
                         {award.description}
                       </p>
                     </div>
