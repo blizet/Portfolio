@@ -1067,7 +1067,7 @@ const Footer = () => {
             </a>
             <span className="text-gray-600">/</span>
             <a 
-              href="https://github.com" 
+              href="https://github.com/blizet" 
               target="_blank"
               rel="noopener noreferrer"
               className="link-hover text-xs md:text-sm font-mono text-gray-500 hover:text-white transition-colors"
