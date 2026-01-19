@@ -676,6 +676,12 @@ const Awards = () => {
       org: "ISW",
       description: "Paper on Fate Protocol accepted at International Stability Workshop (peer-reviewed). Contributed research on decentralized prediction markets and blockchain infrastructure."
     },
+    {
+      "year": "2024",
+      "title": "Winner of MSME Idea Hackathon 3.0 (Women)",
+      "org": "MY MSME / ISW",
+      "description": "Team 'Kridin' won the MSME Idea Hackathon 3.0 (Women) with an innovative platform where sport players can mint NFTs to raise crowdfunding, stream live events and stories to build trust, and allow fractional NFT holders to own a part of the player's journey, with value growing as the player progresses. Received funding and incubation support under the MSME Innovative Scheme."
+    },
     { 
       year: "2024", 
       title: "Hackoverflow 2nd Place", 
