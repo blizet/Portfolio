@@ -12,12 +12,13 @@ import Link from "next/link";
  */
 export default function StickerPeel() {
   return (
-    <div className="peel-corner" aria-hidden={false}>
+    <div className="peel-corner" aria-hidden={false} style={{ zIndex: 1200 }}>
       <Link
         href="/cartoon"
         prefetch
         aria-label="Open cartoon mode"
         title="psst — there's a notebook behind this"
+        style={{ pointerEvents: "auto" }}
       >
         <svg viewBox="0 0 110 110" xmlns="http://www.w3.org/2000/svg">
           <defs>
