@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { basePath } from "@/lib/basePath";
 
 /**
  * Premium-side sticker peel.
@@ -13,9 +13,8 @@ import Link from "next/link";
 export default function StickerPeel() {
   return (
     <div className="peel-corner" aria-hidden={false} style={{ zIndex: 1200 }}>
-      <Link
-        href="/cartoon"
-        prefetch
+      <a
+        href={`${basePath}/cartoon`}
         aria-label="Open cartoon mode"
         title="psst — there's a notebook behind this"
         style={{ pointerEvents: "auto" }}
@@ -59,7 +58,7 @@ export default function StickerPeel() {
           </g>
         </svg>
         <span className="peel-label">peek :)</span>
-      </Link>
+      </a>
     </div>
   );
 }
