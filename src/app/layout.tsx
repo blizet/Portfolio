@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Syne, Space_Mono } from "next/font/google";
+import { Syne, Space_Mono, Caveat, Patrick_Hand } from "next/font/google";
 import "./globals.css";
 
 const syne = Syne({
@@ -12,6 +12,20 @@ const spaceMono = Space_Mono({
   variable: "--font-space-mono",
   subsets: ["latin"],
   weight: ["400", "700"],
+});
+
+const caveat = Caveat({
+  variable: "--font-caveat",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+const patrickHand = Patrick_Hand({
+  variable: "--font-patrick",
+  subsets: ["latin"],
+  weight: ["400"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -27,8 +41,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className={`${syne.variable} ${spaceMono.variable} antialiased`}>
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var k='theme';var d=document.documentElement;var s=localStorage.getItem(k);if(s==='light'||s==='dark'){d.setAttribute('data-theme',s);return;}d.setAttribute('data-theme','dark');}catch(e){}})();`,
+          }}
+        />
+      </head>
+      <body
+        className={`${syne.variable} ${spaceMono.variable} ${caveat.variable} ${patrickHand.variable} antialiased`}
+      >
         {children}
       </body>
     </html>

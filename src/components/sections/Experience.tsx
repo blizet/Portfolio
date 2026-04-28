@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { basePath } from "@/lib/basePath";
+import { useThemeMode } from "@/lib/useThemeMode";
 
 const ACCENT = "#8b5cf6";
 
@@ -62,7 +63,7 @@ const experiences: ExperienceItem[] = [
       "Implemented OAuth 2.0 with rate limiting, timeouts, and centralized error logging.",
       "Developed automated pipelines for scraping, SEO audits, and metadata generation.",
     ],
-    logo: `${basePath}/logos/kridinify_Tech.jpg`,
+    logo: `${basePath}/logos/kridinify_Tech.png`,
     tag: "Product",
   },
   {
@@ -142,6 +143,8 @@ const experiences: ExperienceItem[] = [
 ];
 
 export default function Experience() {
+  const theme = useThemeMode();
+  const isLight = theme === "light";
   const sectionRef = useRef<HTMLElement>(null);
   const [openId, setOpenId] = useState<string>(experiences[1].id);
 
@@ -209,7 +212,7 @@ export default function Experience() {
                 data-exp-row
                 className="rounded-2xl border border-white/10 bg-white/[0.02] transition-all duration-300"
                 style={{
-                  borderColor: isOpen ? `${ACCENT}55` : "rgba(255,255,255,0.10)",
+                  borderColor: isOpen ? `${ACCENT}55` : "var(--w-10)",
                   boxShadow: isOpen ? `0 20px 45px -28px ${ACCENT}66` : "none",
                 }}
               >
@@ -233,9 +236,15 @@ export default function Experience() {
                           alt={`${exp.company} logo`}
                           className="h-full w-full object-contain p-2 transition-all duration-500"
                           style={{
+                            // Dark mode uses `invert(1)` so even a pure-black
+                            // monochrome logo (e.g. Kridinify) flips to white —
+                            // brightness alone can't lift #000 because 0 × n = 0.
+                            // Light mode keeps a darken-to-ink filter.
                             filter: isOpen
                               ? "none"
-                              : "grayscale(1) brightness(3.2) contrast(1.15)",
+                              : isLight
+                                ? "grayscale(1) brightness(0) contrast(1.05)"
+                                : "grayscale(1) invert(1) brightness(1.05) contrast(1.05)",
                           }}
                           loading="lazy"
                         />
@@ -249,8 +258,8 @@ export default function Experience() {
                           <span
                             className="font-mono text-[9px] tracking-[0.28em] uppercase px-2 py-0.5 rounded-full border"
                             style={{
-                              borderColor: isOpen ? `${ACCENT}55` : "rgba(255,255,255,0.14)",
-                              color: isOpen ? ACCENT : "rgba(255,255,255,0.55)",
+                              borderColor: isOpen ? `${ACCENT}55` : "var(--w-14)",
+                              color: isOpen ? ACCENT : "var(--w-55)",
                               background: isOpen ? `${ACCENT}10` : "transparent",
                             }}
                           >
@@ -263,7 +272,7 @@ export default function Experience() {
                             aria-hidden
                             className="inline-block h-1.5 w-1.5 rounded-full"
                             style={{
-                              background: isOpen ? ACCENT : "rgba(255,255,255,0.32)",
+                              background: isOpen ? ACCENT : "var(--w-32)",
                               boxShadow: isOpen ? `0 0 8px ${ACCENT}` : "none",
                             }}
                           />

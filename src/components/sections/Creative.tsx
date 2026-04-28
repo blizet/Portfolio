@@ -19,6 +19,7 @@ type Pursuit = {
   body: string;
   manifesto: string;
   tags: string[];
+  href: string;
   flip?: boolean;
 };
 
@@ -26,13 +27,14 @@ const pursuits: Pursuit[] = [
   {
     num: "01",
     letter: "W",
-    kicker: "Narrative",
-    title: "Writing",
+    kicker: "Typography",
+    title: "Typography",
     italic: "longform & technical narrative",
     body:
       "Translating complex systems into prose people actually want to read - documentation, deep dives, and the occasional argument disguised as a blog post.",
     manifesto: "I write to think clearly. The page is a debugger for ideas.",
     tags: ["Technical Writing", "Documentation", "Essays"],
+    href: "https://medium.com/@anjalijha2k3",
   },
   {
     num: "02",
@@ -44,6 +46,7 @@ const pursuits: Pursuit[] = [
       "Composition, type, and rhythm. Designing for clarity first and delight second - the kind of details that only register when they're missing.",
     manifesto: "Design is the way you remove every word that doesn't earn its place.",
     tags: ["Interface", "Motion", "Identity"],
+    href: "https://contra.com/anjali_jha_7i4gz4k5?referralExperimentNid=DEFAULT_REFERRAL_PROGRAM&referrerUsername=anjali_jha_7i4gz4k5",
     flip: true,
   },
   {
@@ -56,6 +59,7 @@ const pursuits: Pursuit[] = [
       "Collaboration with strangers who become collaborators - code reviews, mentorship, and shipping work that anyone can fork.",
     manifesto: "The best work I've shipped has somebody else's name on the next commit.",
     tags: ["GSoC", "Mentorship", "OSS Contributions"],
+    href: "https://github.com/blizet",
   },
 ];
 
@@ -148,9 +152,13 @@ export default function Creative() {
                 p.flip ? "md:[&>*:first-child]:order-2" : ""
               }`}
             >
-              <div
+              <a
                 data-creative-letter
-                className={`relative select-none ${p.flip ? "md:text-right" : ""}`}
+                href={p.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Open ${p.title} profile`}
+                className={`relative select-none block rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 ${p.flip ? "md:text-right" : ""}`}
               >
                 <span
                   aria-hidden
@@ -181,9 +189,16 @@ export default function Creative() {
                 >
                   {p.letter}
                 </span>
-              </div>
+              </a>
 
-              <div data-creative-prose className="relative max-w-xl">
+              <a
+                data-creative-prose
+                href={p.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative max-w-xl block rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+                aria-label={`Open ${p.title} profile`}
+              >
                 <div className="flex items-baseline gap-4 mb-5">
                   <span
                     className="font-mono text-[11px] tracking-[0.32em] uppercase"
@@ -199,7 +214,7 @@ export default function Creative() {
                 </h4>
                 <p
                   className="mt-3 text-base md:text-lg italic tracking-wide"
-                  style={{ color: "rgba(255,255,255,0.5)" }}
+                  style={{ color: "var(--w-50)" }}
                 >
                   {p.italic}
                 </p>
@@ -214,7 +229,7 @@ export default function Creative() {
                   className="mt-7 pl-5 italic text-base md:text-lg leading-relaxed"
                   style={{
                     borderLeft: `2px solid ${ACCENT}88`,
-                    color: "rgba(237,233,254,0.85)",
+                    color: "var(--w-85)",
                   }}
                 >
                   &ldquo;{p.manifesto}&rdquo;
@@ -227,14 +242,17 @@ export default function Creative() {
                         <span
                           aria-hidden
                           className="h-1 w-1 rounded-full"
-                          style={{ background: "rgba(255,255,255,0.22)" }}
+                          style={{ background: "var(--w-22)" }}
                         />
                       )}
                       <span>{tag}</span>
                     </span>
                   ))}
                 </div>
-              </div>
+                <p className="mt-6 font-mono text-[10px] tracking-[0.24em] uppercase text-white/55">
+                  Open profile ↗
+                </p>
+              </a>
             </article>
           ))}
         </div>

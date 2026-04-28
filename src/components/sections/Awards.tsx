@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useThemeMode } from "@/lib/useThemeMode";
 
 const ACCENT = "#8b5cf6";
 
@@ -65,6 +66,8 @@ const years = Array.from(new Set(awards.map((a) => a.year))).sort((a, b) =>
 );
 
 export default function Awards() {
+  const theme = useThemeMode();
+  const isLight = theme === "light";
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -176,7 +179,7 @@ export default function Awards() {
             aria-hidden
             className="hidden md:block absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-px"
             style={{
-              background: `linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.10) 25%, rgba(255,255,255,0.10) 75%, transparent 100%)`,
+              background: `linear-gradient(180deg, transparent 0%, var(--w-10) 25%, var(--w-10) 75%, transparent 100%)`,
             }}
           />
 
@@ -193,11 +196,11 @@ export default function Awards() {
                   className="flex items-end justify-between gap-4 mb-6 md:mb-8"
                 >
                   <h4
-                    className="font-black tabular-nums leading-[0.85] tracking-tighter text-white/[0.96]"
+                    className={`font-black tabular-nums leading-[0.85] tracking-tighter ${isLight ? "text-black/90" : "text-white/[0.96]"}`}
                     style={{
                       fontSize: "clamp(2.75rem, 8vw, 5.25rem)",
                       letterSpacing: "-0.045em",
-                      textShadow: `0 12px 40px ${ACCENT}22`,
+                      textShadow: isLight ? "none" : `0 12px 40px ${ACCENT}22`,
                     }}
                   >
                     {year}

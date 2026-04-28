@@ -59,7 +59,7 @@ export default function About() {
         >
           Software developer building{" "}
           <span style={{ color: ACCENT }}>web3</span>, full-stack
-          and <span style={{ color: ACCENT }}>AI</span> products.
+          and <span style={{ color: ACCENT }}>AI</span> productst.
         </h3>
 
         <div className="grid lg:grid-cols-[1.4fr_1fr] gap-8 lg:gap-14">

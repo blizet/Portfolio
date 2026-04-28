@@ -14,6 +14,7 @@ import Faq from "@/components/sections/Faq";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/sections/Footer";
 import SmoothScroll from "@/components/SmoothScroll";
+import StickerPeel from "@/components/StickerPeel";
 import { basePath } from "@/lib/basePath";
 
 export default function Home() {
@@ -74,6 +75,7 @@ export default function Home() {
         <NameLoader imagesReady={imagesLoaded} onAnimationDone={handleAnimationDone} />
       )}
       {!loaderMounted && <SmoothScroll />}
+      {!loaderMounted && <StickerPeel />}
       <main className={`transition-opacity duration-1000 ${transitioning ? "opacity-100" : "opacity-0"}`}>
         <Nav />
         <Hero />

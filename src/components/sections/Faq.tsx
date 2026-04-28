@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useScrollReveal } from "@/lib/useScrollReveal";
+import { useThemeMode } from "@/lib/useThemeMode";
 
 const ACCENT = "#8b5cf6";
 
@@ -54,6 +55,8 @@ const topics = ["Getting Started", "Pricing", "Timeline", "Process", "Contact", 
 const types = ["FAQ", "Info"];
 
 export default function Faq() {
+  const theme = useThemeMode();
+  const isLight = theme === "light";
   const containerRef = useScrollReveal<HTMLElement>({ y: 24, stagger: 0.06 });
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
@@ -103,7 +106,12 @@ export default function Faq() {
     <section
       id="faq"
       ref={containerRef}
-      className="py-32 md:py-40 px-6 md:px-12 lg:px-20 bg-[radial-gradient(circle_at_85%_15%,rgba(139,92,246,0.06),transparent_45%),radial-gradient(circle_at_15%_90%,rgba(139,92,246,0.05),transparent_45%),linear-gradient(180deg,#0a0c14_0%,#0a0c14_100%)] text-white relative overflow-hidden"
+      className={`py-32 md:py-40 px-6 md:px-12 lg:px-20 relative overflow-hidden ${isLight ? "text-black" : "text-white"}`}
+      style={{
+        background: isLight
+          ? "radial-gradient(circle at 85% 15%, rgba(139,92,246,0.10), transparent 45%), radial-gradient(circle at 15% 90%, rgba(139,92,246,0.08), transparent 45%), linear-gradient(180deg,#f4f1ea 0%, #f4f1ea 100%)"
+          : "radial-gradient(circle at 85% 15%, rgba(139,92,246,0.06), transparent 45%), radial-gradient(circle at 15% 90%, rgba(139,92,246,0.05), transparent 45%), linear-gradient(180deg,#0a0c14 0%, #0a0c14 100%)",
+      }}
     >
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="flex items-baseline gap-4 mb-16 md:mb-20" data-reveal>
@@ -114,13 +122,13 @@ export default function Faq() {
           <div className="flex-1 h-px bg-white/15" />
         </div>
 
-        <div className="flex flex-col md:flex-row gap-0 rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-md text-white overflow-hidden" data-reveal>
+        <div className={`flex flex-col md:flex-row gap-0 rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-md overflow-hidden ${isLight ? "text-black" : "text-white"}`} data-reveal>
           <div className="md:w-64 p-6 border-b md:border-b-0 md:border-r border-white/10 bg-white/[0.025]">
             <div className="flex items-center justify-between mb-6">
               <span className="font-mono text-xs text-white/45 tracking-wider">/ FILTER</span>
               <button
                 onClick={clearFilters}
-                className="font-mono text-[10px] text-white/40 hover:text-white transition-colors tracking-wider"
+                className={`font-mono text-[10px] tracking-wider transition-colors ${isLight ? "text-black/40 hover:text-black" : "text-white/40 hover:text-white"}`}
               >
                 CLEAR FILTERS
               </button>
@@ -128,7 +136,7 @@ export default function Faq() {
 
             <div className="mb-6">
               <div className="flex items-center gap-2 mb-3">
-                <svg className="w-4 h-4 text-white/65" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className={`w-4 h-4 ${isLight ? "text-black/65" : "text-white/65"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -136,7 +144,7 @@ export default function Faq() {
                     d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
                   />
                 </svg>
-                <span className="font-mono text-xs font-bold text-white/85 tracking-wider">TOPIC</span>
+                <span className={`font-mono text-xs font-bold tracking-wider ${isLight ? "text-black/85" : "text-white/85"}`}>TOPIC</span>
               </div>
               <div className="pl-6 space-y-2.5">
                 {topics.map((topic, i) => {
@@ -152,12 +160,12 @@ export default function Faq() {
                       <div
                         className="w-4 h-4 border rounded transition-colors flex items-center justify-center"
                         style={{
-                          borderColor: checked ? ACCENT : "rgba(255,255,255,0.25)",
+                          borderColor: checked ? ACCENT : "var(--w-25)",
                           backgroundColor: checked ? ACCENT : "transparent",
                         }}
                       >
                         {checked && (
-                          <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-3 h-3" fill="none" stroke="#ffffff" viewBox="0 0 24 24">
                             <path
                               strokeLinecap="round"
                               strokeLinejoin="round"
@@ -169,7 +177,9 @@ export default function Faq() {
                       </div>
                       <span
                         className={`font-mono text-xs transition-colors tracking-wide ${
-                          checked ? "text-white" : "text-white/65 group-hover:text-white"
+                          checked
+                            ? isLight ? "text-black" : "text-white"
+                            : isLight ? "text-black/65 group-hover:text-black" : "text-white/65 group-hover:text-white"
                         }`}
                       >
                         {topic} ({topicCounts[topic] || 0})
@@ -182,7 +192,7 @@ export default function Faq() {
 
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <svg className="w-4 h-4 text-white/65" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className={`w-4 h-4 ${isLight ? "text-black/65" : "text-white/65"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -190,7 +200,7 @@ export default function Faq() {
                     d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
                   />
                 </svg>
-                <span className="font-mono text-xs font-bold text-white/85 tracking-wider">TYPE</span>
+                <span className={`font-mono text-xs font-bold tracking-wider ${isLight ? "text-black/85" : "text-white/85"}`}>TYPE</span>
               </div>
               <div className="pl-6 space-y-2.5">
                 {types.map((type, i) => {
@@ -206,12 +216,12 @@ export default function Faq() {
                       <div
                         className="w-4 h-4 border rounded transition-colors flex items-center justify-center"
                         style={{
-                          borderColor: checked ? ACCENT : "rgba(255,255,255,0.25)",
+                          borderColor: checked ? ACCENT : "var(--w-25)",
                           backgroundColor: checked ? ACCENT : "transparent",
                         }}
                       >
                         {checked && (
-                          <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-3 h-3" fill="none" stroke="#ffffff" viewBox="0 0 24 24">
                             <path
                               strokeLinecap="round"
                               strokeLinejoin="round"
@@ -223,7 +233,9 @@ export default function Faq() {
                       </div>
                       <span
                         className={`font-mono text-xs transition-colors tracking-wide ${
-                          checked ? "text-white" : "text-white/65 group-hover:text-white"
+                          checked
+                            ? isLight ? "text-black" : "text-white"
+                            : isLight ? "text-black/65 group-hover:text-black" : "text-white/65 group-hover:text-white"
                         }`}
                       >
                         {type} ({typeCounts[type] || 0})
@@ -279,7 +291,11 @@ export default function Faq() {
                           className={`text-xl font-light transition-transform duration-300 ${
                             isOpen ? "rotate-45" : ""
                           }`}
-                          style={{ color: isOpen ? "#ede9fe" : "rgba(255,255,255,0.45)" }}
+                          style={{
+                            color: isOpen
+                              ? isLight ? ACCENT : "#ede9fe"
+                              : "var(--w-45)",
+                          }}
                         >
                           +
                         </span>

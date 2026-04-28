@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import type { CSSProperties } from "react";
 import { gsap } from "gsap";
+import { useThemeMode } from "@/lib/useThemeMode";
 
 type NameLoaderProps = {
   imagesReady: boolean;
@@ -26,6 +27,8 @@ const ACCENT_PRIMARY = "#a78bfa";
 const ACCENT_SECONDARY = "#22d3ee";
 
 export default function NameLoader({ imagesReady, onAnimationDone }: NameLoaderProps) {
+  const theme = useThemeMode();
+  const isLight = theme === "light";
   const rootRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const lettersInnerRef = useRef<(HTMLSpanElement | null)[]>([]);
@@ -266,28 +269,31 @@ export default function NameLoader({ imagesReady, onAnimationDone }: NameLoaderP
   return (
     <div
       ref={rootRef}
-      className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-[#070811]"
+      className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden"
+      style={{ backgroundColor: isLight ? "#f4f1ea" : "#070811" }}
       aria-label="Loading"
     >
       <div
         className="pointer-events-none absolute inset-0"
         style={{
-          background:
-            "radial-gradient(circle at 25% 30%, rgba(167,139,250,0.14), transparent 50%), radial-gradient(circle at 80% 70%, rgba(34,211,238,0.08), transparent 50%)",
+          background: isLight
+            ? "radial-gradient(circle at 25% 30%, rgba(167,139,250,0.10), transparent 52%), radial-gradient(circle at 80% 70%, rgba(34,211,238,0.06), transparent 52%)"
+            : "radial-gradient(circle at 25% 30%, rgba(167,139,250,0.14), transparent 50%), radial-gradient(circle at 80% 70%, rgba(34,211,238,0.08), transparent 50%)",
         }}
       />
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.05] mix-blend-overlay"
+        className="pointer-events-none absolute inset-0 opacity-[0.05]"
         style={{
-          backgroundImage:
-            "radial-gradient(rgba(255,255,255,0.6) 1px, transparent 1px)",
+          backgroundImage: isLight
+            ? "radial-gradient(rgba(15,20,34,0.24) 1px, transparent 1px)"
+            : "radial-gradient(rgba(255,255,255,0.6) 1px, transparent 1px)",
           backgroundSize: "3px 3px",
         }}
       />
 
       <span
         ref={monogramRef}
-        className="absolute top-7 left-7 md:top-9 md:left-10 font-mono text-[10px] md:text-[11px] tracking-[0.42em] text-white/55 flex items-center gap-3"
+        className={`absolute top-7 left-7 md:top-9 md:left-10 font-mono text-[10px] md:text-[11px] tracking-[0.42em] flex items-center gap-3 ${isLight ? "text-black/55" : "text-white/55"}`}
       >
         <span
           className="inline-block h-1.5 w-1.5 rounded-full"
@@ -298,7 +304,7 @@ export default function NameLoader({ imagesReady, onAnimationDone }: NameLoaderP
 
       <span
         ref={sessionRef}
-        className="absolute top-7 right-7 md:top-9 md:right-10 font-mono text-[10px] md:text-[11px] tracking-[0.42em] text-white/35"
+        className={`absolute top-7 right-7 md:top-9 md:right-10 font-mono text-[10px] md:text-[11px] tracking-[0.42em] ${isLight ? "text-black/35" : "text-white/35"}`}
       >
         SESSION 001 / IN MOTION
       </span>
@@ -314,7 +320,7 @@ export default function NameLoader({ imagesReady, onAnimationDone }: NameLoaderP
           />
           <span
             ref={lineLabelRef}
-            className="font-mono text-[10px] md:text-[11px] tracking-[0.45em] text-white/50"
+            className={`font-mono text-[10px] md:text-[11px] tracking-[0.45em] ${isLight ? "text-black/50" : "text-white/50"}`}
           >
             INTRO &middot; 01
           </span>
@@ -322,7 +328,7 @@ export default function NameLoader({ imagesReady, onAnimationDone }: NameLoaderP
 
         <h1
           ref={headingRef}
-          className="text-white whitespace-nowrap select-none relative"
+          className={`whitespace-nowrap select-none relative ${isLight ? "text-black" : "text-white"}`}
           style={{
             fontSize: "clamp(56px, 13vw, 200px)",
             lineHeight: 1,
@@ -369,7 +375,7 @@ export default function NameLoader({ imagesReady, onAnimationDone }: NameLoaderP
 
         <span
           ref={subtitleRef}
-          className="mt-5 md:mt-7 font-mono text-[10px] md:text-[11px] tracking-[0.45em] text-white/55"
+          className={`mt-5 md:mt-7 font-mono text-[10px] md:text-[11px] tracking-[0.45em] ${isLight ? "text-black/55" : "text-white/55"}`}
         >
           SOFTWARE &middot; FULL STACK &middot; CREATIVE
         </span>
@@ -378,7 +384,7 @@ export default function NameLoader({ imagesReady, onAnimationDone }: NameLoaderP
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 w-[260px] md:w-[320px]">
         <div
           ref={progressTrackRef}
-          className="relative h-px w-full bg-white/10 overflow-hidden"
+          className={`relative h-px w-full overflow-hidden ${isLight ? "bg-black/10" : "bg-white/10"}`}
         >
           <span
             ref={progressRef}
@@ -388,7 +394,7 @@ export default function NameLoader({ imagesReady, onAnimationDone }: NameLoaderP
             }}
           />
         </div>
-        <div className="flex items-center justify-between w-full font-mono text-[10px] tracking-[0.42em] text-white/45">
+        <div className={`flex items-center justify-between w-full font-mono text-[10px] tracking-[0.42em] ${isLight ? "text-black/45" : "text-white/45"}`}>
           <span ref={counterRef}>000</span>
           <span ref={counterLabelRef}>LOADING PORTFOLIO</span>
         </div>

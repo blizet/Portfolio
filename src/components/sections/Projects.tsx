@@ -4,10 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { projects } from "@/data/projects";
+import { useThemeMode } from "@/lib/useThemeMode";
 
 const ACCENT = "#8b5cf6";
 
 export default function Projects() {
+  const theme = useThemeMode();
+  const isLight = theme === "light";
   const [activeId, setActiveId] = useState(projects[0].id);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
@@ -33,7 +36,12 @@ export default function Projects() {
   return (
     <section
       id="work"
-      className="relative overflow-hidden py-28 md:py-36 px-6 md:px-12 lg:px-20 bg-[radial-gradient(circle_at_10%_8%,rgba(139,92,246,0.1),transparent_38%),radial-gradient(circle_at_95%_95%,rgba(139,92,246,0.05),transparent_42%),linear-gradient(180deg,#0a0c14_0%,#0a0c14_100%)]"
+      className="relative overflow-hidden py-28 md:py-36 px-6 md:px-12 lg:px-20"
+      style={{
+        background: isLight
+          ? "radial-gradient(circle at 10% 8%, rgba(139,92,246,0.12), transparent 38%), radial-gradient(circle at 95% 95%, rgba(139,92,246,0.06), transparent 42%), linear-gradient(180deg, #f4f1ea 0%, #f4f1ea 100%)"
+          : "radial-gradient(circle at 10% 8%, rgba(139,92,246,0.1), transparent 38%), radial-gradient(circle at 95% 95%, rgba(139,92,246,0.05), transparent 42%), linear-gradient(180deg, #0a0c14 0%, #0a0c14 100%)",
+      }}
     >
       <div className="max-w-[1380px] mx-auto">
         <div className="flex items-baseline gap-4 mb-14 md:mb-16">
@@ -99,7 +107,7 @@ export default function Projects() {
                       borderWidth: 1,
                       borderStyle: "solid",
                       borderColor: `${ACCENT}55`,
-                      background: "rgba(255,255,255,0.04)",
+                      background: "var(--w-04)",
                       boxShadow: `0 8px 22px -8px ${ACCENT}66`,
                     }}
                   >
@@ -142,7 +150,7 @@ export default function Projects() {
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.borderColor = `${ACCENT}88`;
-                      e.currentTarget.style.background = "rgba(255,255,255,0.04)";
+                      e.currentTarget.style.background = "var(--w-04)";
                       e.currentTarget.style.boxShadow = "none";
                     }}
                   >
@@ -179,8 +187,22 @@ export default function Projects() {
 
           <div className="lg:col-span-3 self-stretch relative z-10 isolate">
             <div className="relative h-[440px] sm:h-[560px] md:h-[760px] overflow-hidden rounded-3xl">
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-20 z-30 bg-gradient-to-b from-[#0a0c14] to-transparent" />
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 z-30 bg-gradient-to-t from-[#0a0c14] to-transparent" />
+              <div
+                className="pointer-events-none absolute inset-x-0 top-0 h-20 z-30"
+                style={{
+                  background: isLight
+                    ? "linear-gradient(to bottom, #f4f1ea, transparent)"
+                    : "linear-gradient(to bottom, #0a0c14, transparent)",
+                }}
+              />
+              <div
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-20 z-30"
+                style={{
+                  background: isLight
+                    ? "linear-gradient(to top, #f4f1ea, transparent)"
+                    : "linear-gradient(to top, #0a0c14, transparent)",
+                }}
+              />
 
               <div className="absolute -inset-y-20 -inset-x-10 -rotate-[6deg] origin-center grid grid-cols-3 gap-3 md:gap-4">
                 {columnItems.map((column, columnIndex) => {
@@ -217,7 +239,7 @@ export default function Projects() {
                                   aria-label={`Show details for ${item.title}`}
                                   className={`group relative ${CARD_HEIGHT} w-full shrink-0 overflow-hidden rounded-2xl border transition-all duration-300 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50`}
                                   style={{
-                                    borderColor: isActive ? `${ACCENT}cc` : "rgba(255,255,255,0.18)",
+                                    borderColor: isActive ? `${ACCENT}cc` : "var(--w-18)",
                                     boxShadow: isActive ? `0 0 32px ${ACCENT}66` : "none",
                                     transform: isActive
                                       ? "scale(1.04) rotate(0deg)"
@@ -227,10 +249,12 @@ export default function Projects() {
                                     filter: isHovered
                                       ? "brightness(1.1)"
                                       : hoveredId
-                                        ? "brightness(0.78) saturate(0.85)"
+                                        ? isLight
+                                          ? "brightness(0.92) saturate(0.85)"
+                                          : "brightness(0.78) saturate(0.85)"
                                         : isActive
                                           ? "brightness(1)"
-                                          : "brightness(0.92)",
+                                          : "brightness(var(--card-dim))",
                                   }}
                                 >
                                   <Image
@@ -245,9 +269,9 @@ export default function Projects() {
                                   <div
                                     className="absolute inset-0 transition-opacity duration-300 pointer-events-none"
                                     style={{
-                                      opacity: isActive ? 0 : isHovered ? 0 : 0.18,
+                                      opacity: isActive ? 0 : isHovered ? 0 : isLight ? 0.10 : 0.18,
                                       background:
-                                        "linear-gradient(180deg, rgba(0,0,0,0) 60%, rgba(0,0,0,0.45) 100%)",
+                                        "linear-gradient(180deg, rgba(0,0,0,0) 60%, var(--vignette-strong) 100%)",
                                     }}
                                   />
                                 </button>

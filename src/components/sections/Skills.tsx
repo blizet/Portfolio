@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useThemeMode } from "@/lib/useThemeMode";
 
 const ACCENT = "#8b5cf6";
 
@@ -85,6 +86,8 @@ const LINE_END = 80;
 type OrbitNode = Skill & { angle: number; ux: number; uy: number };
 
 export default function Skills() {
+  const theme = useThemeMode();
+  const isLight = theme === "light";
   const sectionRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const orbitRef = useRef<HTMLDivElement>(null);
@@ -203,18 +206,23 @@ export default function Skills() {
     <section
       id="skills"
       ref={sectionRef}
-      className="relative py-32 md:py-40 px-6 md:px-12 lg:px-20 bg-[radial-gradient(circle_at_85%_15%,rgba(139,92,246,0.06),transparent_45%),radial-gradient(circle_at_10%_90%,rgba(139,92,246,0.08),transparent_45%),linear-gradient(180deg,#0a0c14_0%,#0a0c14_100%)] text-white overflow-hidden"
+      className={`relative py-32 md:py-40 px-6 md:px-12 lg:px-20 overflow-hidden ${isLight ? "text-black" : "text-white"}`}
+      style={{
+        background: isLight
+          ? "radial-gradient(circle at 85% 15%, rgba(139,92,246,0.10), transparent 45%), radial-gradient(circle at 10% 90%, rgba(139,92,246,0.08), transparent 45%), linear-gradient(180deg,#f4f1ea 0%, #f4f1ea 100%)"
+          : "radial-gradient(circle at 85% 15%, rgba(139,92,246,0.06), transparent 45%), radial-gradient(circle at 10% 90%, rgba(139,92,246,0.08), transparent 45%), linear-gradient(180deg,#0a0c14 0%, #0a0c14 100%)",
+      }}
     >
       <div className="max-w-7xl mx-auto">
         <div
           className="flex items-baseline gap-4 mb-16 md:mb-20"
           data-skills-reveal
         >
-          <span className="font-mono text-sm text-white/45">005</span>
-          <h2 className="text-sm font-mono tracking-widest text-white/45">
+          <span className={`font-mono text-sm ${isLight ? "text-black/45" : "text-white/45"}`}>005</span>
+          <h2 className={`text-sm font-mono tracking-widest ${isLight ? "text-black/45" : "text-white/45"}`}>
             CAPABILITIES
           </h2>
-          <div className="flex-1 h-px bg-white/15" />
+          <div className={`flex-1 h-px ${isLight ? "bg-black/15" : "bg-white/15"}`} />
         </div>
 
         <div className="grid lg:grid-cols-[260px_1fr] gap-10 lg:gap-16 items-center">
@@ -233,8 +241,14 @@ export default function Skills() {
                   style={{
                     borderColor: isActive
                       ? `${ACCENT}66`
-                      : "rgba(255,255,255,0.1)",
-                    background: isActive ? `${ACCENT}12` : "rgba(255,255,255,0.02)",
+                      : isLight
+                        ? "rgba(15,20,34,0.12)"
+                        : "rgba(255,255,255,0.1)",
+                    background: isActive
+                      ? `${ACCENT}12`
+                      : isLight
+                        ? "rgba(15,20,34,0.03)"
+                        : "rgba(255,255,255,0.02)",
                     boxShadow: isActive ? `0 14px 40px ${ACCENT}1f` : "none",
                   }}
                 >
@@ -242,7 +256,11 @@ export default function Skills() {
                     <span
                       className="font-mono text-[10px] tracking-[0.22em]"
                       style={{
-                        color: isActive ? "#ede9fe" : "rgba(255,255,255,0.45)",
+                        color: isActive
+                          ? "#ede9fe"
+                          : isLight
+                            ? "rgba(15,20,34,0.45)"
+                            : "rgba(255,255,255,0.45)",
                       }}
                     >
                       {String(idx + 1).padStart(2, "0")}
@@ -250,17 +268,23 @@ export default function Skills() {
                     <span
                       className="text-sm md:text-base font-medium"
                       style={{
-                        color: isActive ? "#fff" : "rgba(255,255,255,0.78)",
+                        color: isActive
+                          ? isLight
+                            ? "#0f1422"
+                            : "#fff"
+                          : isLight
+                            ? "rgba(15,20,34,0.78)"
+                            : "rgba(255,255,255,0.78)",
                       }}
                     >
                       {group.title}
                     </span>
-                    <span className="ml-auto font-mono text-[10px] text-white/40">
+                    <span className={`ml-auto font-mono text-[10px] ${isLight ? "text-black/40" : "text-white/40"}`}>
                       {group.skills.length}
                     </span>
                   </div>
                   {isActive && (
-                    <p className="mt-1.5 text-xs text-white/55 leading-relaxed pl-7">
+                    <p className={`mt-1.5 text-xs leading-relaxed pl-7 ${isLight ? "text-black/55" : "text-white/55"}`}>
                       {group.tagline}
                     </p>
                   )}
@@ -281,7 +305,7 @@ export default function Skills() {
               {Array.from({ length: 22 }).map((_, i) => (
                 <span
                   key={i}
-                  className="absolute h-1 w-1 rounded-full bg-white/30 animate-pulse"
+                  className={`absolute h-1 w-1 rounded-full animate-pulse ${isLight ? "bg-black/25" : "bg-white/30"}`}
                   style={{
                     left: `${(i * 37) % 100}%`,
                     top: `${(i * 53) % 100}%`,
@@ -307,7 +331,7 @@ export default function Skills() {
                   cy="0"
                   r="80"
                   fill="none"
-                  stroke="rgba(255,255,255,0.06)"
+                  stroke={isLight ? "rgba(15,20,34,0.14)" : "rgba(255,255,255,0.06)"}
                   strokeWidth="0.4"
                 />
                 <circle
@@ -315,7 +339,7 @@ export default function Skills() {
                   cy="0"
                   r="60"
                   fill="none"
-                  stroke="rgba(255,255,255,0.04)"
+                  stroke={isLight ? "rgba(15,20,34,0.10)" : "rgba(255,255,255,0.04)"}
                   strokeWidth="0.3"
                   strokeDasharray="1 2"
                 />
@@ -324,7 +348,7 @@ export default function Skills() {
                   cy="0"
                   r="40"
                   fill="none"
-                  stroke="rgba(255,255,255,0.04)"
+                  stroke={isLight ? "rgba(15,20,34,0.10)" : "rgba(255,255,255,0.04)"}
                   strokeWidth="0.3"
                   strokeDasharray="1 2"
                 />
@@ -333,7 +357,7 @@ export default function Skills() {
                   cy="0"
                   r="20"
                   fill="none"
-                  stroke="rgba(255,255,255,0.04)"
+                  stroke={isLight ? "rgba(15,20,34,0.10)" : "rgba(255,255,255,0.04)"}
                   strokeWidth="0.3"
                   strokeDasharray="1 2"
                 />
@@ -346,7 +370,7 @@ export default function Skills() {
                       y1={Math.sin(a) * 82}
                       x2={Math.cos(a) * 86}
                       y2={Math.sin(a) * 86}
-                      stroke="rgba(255,255,255,0.18)"
+                      stroke={isLight ? "rgba(15,20,34,0.25)" : "rgba(255,255,255,0.18)"}
                       strokeWidth="0.4"
                     />
                   );
@@ -361,7 +385,7 @@ export default function Skills() {
                     key={r}
                     x={r + 2}
                     y="-1"
-                    fill="rgba(255,255,255,0.22)"
+                    fill={isLight ? "rgba(15,20,34,0.35)" : "rgba(255,255,255,0.22)"}
                     fontSize="3.6"
                     fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
                     letterSpacing="0.18em"
@@ -447,7 +471,7 @@ export default function Skills() {
                       y1={node.uy * r}
                       x2={node.ux * 92}
                       y2={node.uy * 92}
-                      stroke="rgba(255,255,255,0.09)"
+                      stroke={isLight ? "rgba(15,20,34,0.16)" : "rgba(255,255,255,0.09)"}
                       strokeWidth="0.35"
                       strokeDasharray="0.6 1.4"
                     />
@@ -459,16 +483,16 @@ export default function Skills() {
                 data-hub
                 className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none z-20"
               >
-                <p className="font-mono text-[10px] tracking-[0.32em] text-white/45 uppercase">
+                <p className={`font-mono text-[10px] tracking-[0.32em] uppercase ${isLight ? "text-black/45" : "text-white/45"}`}>
                   {activeGroup.title}
                 </p>
-                <p className="text-4xl md:text-5xl font-semibold mt-2 text-white tabular-nums leading-none">
+                <p className={`text-4xl md:text-5xl font-semibold mt-2 tabular-nums leading-none ${isLight ? "text-black" : "text-white"}`}>
                   {averageDisplay}
-                  <span className="text-base md:text-lg text-white/40 ml-1">
+                  <span className={`text-base md:text-lg ml-1 ${isLight ? "text-black/40" : "text-white/40"}`}>
                     %
                   </span>
                 </p>
-                <p className="mt-2 text-[11px] md:text-xs text-white/55 leading-snug max-w-[200px] mx-auto">
+                <p className={`mt-2 text-[11px] md:text-xs leading-snug max-w-[200px] mx-auto ${isLight ? "text-black/55" : "text-white/55"}`}>
                   {activeGroup.tagline}
                 </p>
               </div>
@@ -546,10 +570,18 @@ export default function Skills() {
                         <p
                           className="font-semibold text-sm md:text-base tracking-tight transition-colors duration-300"
                           style={{
-                            color: isHov ? "#fff" : "rgba(255,255,255,0.85)",
+                            color: isHov
+                              ? isLight
+                                ? "#0f1422"
+                                : "#fff"
+                              : isLight
+                                ? "rgba(15,20,34,0.85)"
+                                : "rgba(255,255,255,0.85)",
                             textShadow: isHov
                               ? `0 0 18px ${ACCENT}88`
-                              : "0 1px 8px rgba(0,0,0,0.6)",
+                              : isLight
+                                ? "0 1px 8px rgba(255,255,255,0.5)"
+                                : "0 1px 8px rgba(0,0,0,0.6)",
                           }}
                         >
                           {node.name}
@@ -557,7 +589,7 @@ export default function Skills() {
                         <p
                           className="font-mono text-[10px] tracking-[0.22em] mt-0.5 transition-colors duration-300"
                           style={{
-                            color: isHov ? ACCENT : "rgba(255,255,255,0.5)",
+                            color: isHov ? ACCENT : isLight ? "rgba(15,20,34,0.5)" : "rgba(255,255,255,0.5)",
                           }}
                         >
                           {node.level}%
@@ -572,7 +604,7 @@ export default function Skills() {
         </div>
 
         <p
-          className="mt-12 lg:mt-16 text-center font-mono text-[10px] tracking-[0.32em] text-white/35"
+          className={`mt-12 lg:mt-16 text-center font-mono text-[10px] tracking-[0.32em] ${isLight ? "text-black/35" : "text-white/35"}`}
           data-skills-reveal
         >
           MOVE THE POINTER &nbsp;/&nbsp; TILT THE FIELD &nbsp;/&nbsp; HOVER A
