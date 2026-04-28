@@ -1,120 +1,276 @@
 ﻿"use client";
 
-import { useState } from "react";
-import { Plus } from "@/components/icons";
-import { useScrollReveal } from "@/lib/useScrollReveal";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const ACCENT = "#8b5cf6";
 
-const awards = [
+type Award = {
+  year: string;
+  title: string;
+  org: string;
+  category: "Open Source" | "Hackathon" | "Publication";
+  description: string;
+  highlight?: boolean;
+};
+
+const awards: Award[] = [
   {
     year: "2025",
     title: "Google Summer of Code",
     org: "AOSSIE",
+    category: "Open Source",
+    highlight: true,
     description:
-      "Selected among global developers to contribute to open-source decentralized systems. Developed Fate Protocol EVM Frontend, a decentralized prediction market built with Next.js, TypeScript, and Ethers.js.",
+      "Selected globally to ship Fate Protocol — a decentralized prediction market — with AOSSIE.",
   },
   {
     year: "2025",
-    title: "ETC Nova Hackathon Winner",
+    title: "ETC Nova Hackathon · Winner",
     org: "Global",
+    category: "Hackathon",
     description:
-      "Recognized for innovation in blockchain user experience and smart contract design. Built a decentralized application showcasing advanced Web3 integration and user-friendly interface design.",
+      "Recognized for innovation in blockchain UX and smart-contract design.",
   },
   {
     year: "2025",
     title: "Research Publication",
     org: "ISW",
+    category: "Publication",
     description:
-      "Paper on Fate Protocol accepted at International Stability Workshop (peer-reviewed). Contributed research on decentralized prediction markets and blockchain infrastructure.",
+      "Paper on Fate Protocol accepted at International Stability Workshop (peer-reviewed).",
   },
   {
     year: "2024",
-    title: "Winner of MSME Idea Hackathon 3.0 (Women)",
-    org: "MY MSME",
+    title: "MSME Idea Hackathon 3.0",
+    org: "MY MSME (Women)",
+    category: "Hackathon",
+    highlight: true,
     description:
-      "Team 'Kridin' won the MSME Idea Hackathon 3.0 (Women) with an innovative platform where sport players can mint NFTs to raise crowdfunding, stream live events and stories to build trust, and allow fractional NFT holders to own a part of the player's journey, with value growing as the player progresses. Received funding and incubation support under the MSME Innovative Scheme.",
+      "Won with Kridin — a player-NFT crowdfunding + livestream platform. Funding + incubation under MSME Innovative Scheme.",
   },
   {
     year: "2024",
-    title: "Hackoverflow 2nd Place",
+    title: "Hackoverflow · 2nd Place",
     org: "CV Competition",
+    category: "Hackathon",
     description:
-      "Achieved 2nd place in content-based image processing and computer vision competition. Demonstrated expertise in image analysis algorithms and pattern recognition.",
+      "2nd place in a content-based image processing and computer vision competition.",
   },
 ];
 
+const years = Array.from(new Set(awards.map((a) => a.year))).sort((a, b) =>
+  b.localeCompare(a),
+);
+
 export default function Awards() {
-  const containerRef = useScrollReveal<HTMLElement>({ y: 24, stagger: 0.05 });
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const toggleAward = (index: number) => setOpenIndex(openIndex === index ? null : index);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    gsap.registerPlugin(ScrollTrigger);
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        "[data-aw-head]",
+        { opacity: 0, y: 24 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.9,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 82%",
+            once: true,
+          },
+        },
+      );
+
+      const columns = gsap.utils.toArray<HTMLElement>("[data-aw-col]");
+      columns.forEach((col, ci) => {
+        gsap.fromTo(
+          col.querySelectorAll("[data-aw-year]"),
+          { opacity: 0, y: 40 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "power3.out",
+            delay: ci * 0.05,
+            scrollTrigger: {
+              trigger: col,
+              start: "top 78%",
+              once: true,
+            },
+          },
+        );
+        gsap.fromTo(
+          col.querySelectorAll("[data-aw-card]"),
+          { opacity: 0, y: 24 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            stagger: 0.08,
+            ease: "power3.out",
+            delay: 0.1 + ci * 0.05,
+            scrollTrigger: {
+              trigger: col,
+              start: "top 78%",
+              once: true,
+            },
+          },
+        );
+      });
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
+
+  const totals = years.map((y) => ({
+    year: y,
+    count: awards.filter((a) => a.year === y).length,
+  }));
 
   return (
     <section
       id="awards"
-      ref={containerRef}
-      className="py-32 md:py-40 px-4 sm:px-8 md:px-16 lg:px-24 bg-[radial-gradient(circle_at_15%_20%,rgba(139,92,246,0.06),transparent_42%),linear-gradient(180deg,#0a0c14_0%,#0a0c14_100%)] text-white overflow-hidden"
+      ref={sectionRef}
+      className="relative py-24 md:py-32 px-6 md:px-10 lg:px-20 bg-[radial-gradient(circle_at_88%_15%,rgba(139,92,246,0.07),transparent_45%),radial-gradient(circle_at_12%_88%,rgba(139,92,246,0.04),transparent_45%)] text-white overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto">
-        <div className="flex items-baseline gap-4 mb-20 md:mb-24 px-2 sm:px-0" data-reveal>
-          <span className="font-mono text-sm text-white/45">007</span>
+      <div className="max-w-[1280px] mx-auto">
+        <div className="flex items-baseline gap-4 mb-10 md:mb-14" data-aw-head>
+          <span className="font-mono text-sm text-white/45">006</span>
           <h2 className="text-sm font-mono tracking-widest text-white/45">RECOGNITION</h2>
           <div className="flex-1 h-px bg-white/15" />
+          <span className="font-mono text-[10px] tracking-[0.28em] text-white/40 hidden md:inline">
+            {String(awards.length).padStart(2, "0")} ENTRIES
+          </span>
         </div>
 
-        <div className="space-y-0 overflow-x-hidden border-t border-white/10">
-          {awards.map((award, i) => {
-            const isOpen = openIndex === i;
+        <div
+          className="mb-14 md:mb-20 flex flex-col md:flex-row md:items-end md:justify-between gap-8"
+          data-aw-head
+        >
+          <h3 className="text-3xl md:text-5xl font-bold tracking-tight leading-[1.05] max-w-3xl">
+            A short list of what&apos;s been{" "}
+            <span className="italic text-white/55">recognized</span>.
+          </h3>
+          <div className="flex items-center gap-6 md:gap-8 font-mono text-[11px] tracking-[0.22em] uppercase text-white/55">
+            {totals.map((t) => (
+              <div key={t.year} className="flex items-baseline gap-2">
+                <span
+                  className="text-2xl md:text-3xl font-bold tabular-nums"
+                  style={{ color: ACCENT }}
+                >
+                  {String(t.count).padStart(2, "0")}
+                </span>
+                <span>· {t.year}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-x-10 lg:gap-x-16 gap-y-12 md:gap-y-14 relative">
+          <span
+            aria-hidden
+            className="hidden md:block absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-px"
+            style={{
+              background: `linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.10) 25%, rgba(255,255,255,0.10) 75%, transparent 100%)`,
+            }}
+          />
+
+          {years.map((year, ci) => {
+            const list = awards.filter((a) => a.year === year);
             return (
               <div
-                key={i}
-                data-reveal
-                className="border-b border-white/10 hover:bg-white/[0.025] transition-all duration-300"
+                key={year}
+                data-aw-col
+                className={ci === 0 ? "md:pr-2" : "md:pl-2"}
               >
                 <div
-                  onClick={() => toggleAward(i)}
-                  className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 md:gap-8 lg:gap-12 py-7 sm:py-8 md:py-10 lg:py-12 px-4 sm:px-6 hover:pl-6 sm:hover:pl-8 transition-all duration-300 cursor-pointer"
+                  data-aw-year
+                  className="flex items-end justify-between gap-4 mb-6 md:mb-8"
                 >
-                  <span className="font-mono text-sm text-white/45 w-16 sm:w-20 shrink-0">
-                    {award.year}
-                  </span>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white break-words tracking-tight">
-                      {award.title}
-                    </h3>
-                    <span className="font-mono text-xs text-white/45 sm:hidden mt-1 block">
-                      {award.org}
-                    </span>
-                  </div>
-                  <span className="font-mono text-xs sm:text-sm text-white/55 shrink-0 hidden sm:inline">
-                    {award.org}
-                  </span>
-                  <div
-                    className={`w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center shrink-0 transition-all duration-300 rounded-full border ${
-                      isOpen ? "rotate-45" : ""
-                    }`}
+                  <h4
+                    className="font-black tabular-nums leading-[0.85] tracking-tighter text-white/[0.96]"
                     style={{
-                      borderColor: isOpen ? `${ACCENT}88` : "rgba(255,255,255,0.2)",
-                      color: isOpen ? "#ede9fe" : "rgba(255,255,255,0.7)",
+                      fontSize: "clamp(2.75rem, 8vw, 5.25rem)",
+                      letterSpacing: "-0.045em",
+                      textShadow: `0 12px 40px ${ACCENT}22`,
                     }}
                   >
-                    <Plus />
+                    {year}
+                  </h4>
+                  <div className="text-right pb-2 md:pb-3 shrink-0">
+                    <p
+                      className="font-mono text-[10px] tracking-[0.28em] uppercase"
+                      style={{ color: ACCENT }}
+                    >
+                      Vol. {String(ci + 1).padStart(2, "0")}
+                    </p>
+                    <p className="font-mono text-[10px] tracking-[0.22em] uppercase text-white/40 mt-1">
+                      {list.length} {list.length === 1 ? "Entry" : "Entries"}
+                    </p>
                   </div>
                 </div>
 
-                <div
-                  className={`overflow-hidden transition-all duration-500 ease-in-out ${
-                    isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-                  }`}
-                >
-                  <div className="px-4 sm:px-6 pb-8 sm:pb-10 md:pb-12 pt-2">
-                    <div className="pl-0 sm:pl-20 md:pl-24 lg:pl-28">
-                      <p className="text-white/72 text-sm sm:text-base md:text-lg leading-relaxed max-w-3xl break-words">
+                <ul className="space-y-6 md:space-y-7">
+                  {list.map((award, i) => (
+                    <li
+                      key={award.title}
+                      data-aw-card
+                      className="group relative pl-7"
+                    >
+                      <span
+                        aria-hidden
+                        className="absolute left-0 top-1 font-mono text-[10px] tracking-[0.28em] text-white/35"
+                      >
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span
+                        aria-hidden
+                        className="absolute left-[6px] top-7 bottom-0 w-px bg-white/8 group-last:hidden"
+                      />
+
+                      <div className="flex items-start justify-between gap-4">
+                        <h5
+                          className="text-lg md:text-xl font-semibold tracking-tight text-white leading-[1.2] transition-colors duration-300 group-hover:text-white"
+                          style={
+                            award.highlight
+                              ? {
+                                  textShadow: `0 0 24px ${ACCENT}44`,
+                                }
+                              : undefined
+                          }
+                        >
+                          {award.title}
+                        </h5>
+                        {award.highlight && (
+                          <span
+                            aria-hidden
+                            className="shrink-0 mt-2 font-mono text-[9px] tracking-[0.32em] uppercase"
+                            style={{ color: ACCENT }}
+                          >
+                            ★
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="mt-1.5 flex items-center gap-3 font-mono text-[11px] tracking-[0.18em] uppercase text-white/55">
+                        <span>{award.org}</span>
+                        <span className="h-3 w-px bg-white/15" />
+                        <span style={{ color: `${ACCENT}cc` }}>
+                          {award.category}
+                        </span>
+                      </div>
+
+                      <p className="mt-4 text-[14.5px] md:text-[15px] text-white/65 leading-[1.65] max-w-[55ch]">
                         {award.description}
                       </p>
-                    </div>
-                  </div>
-                </div>
+                    </li>
+                  ))}
+                </ul>
               </div>
             );
           })}

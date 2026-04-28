@@ -210,7 +210,7 @@ export default function Skills() {
           className="flex items-baseline gap-4 mb-16 md:mb-20"
           data-skills-reveal
         >
-          <span className="font-mono text-sm text-white/45">006</span>
+          <span className="font-mono text-sm text-white/45">005</span>
           <h2 className="text-sm font-mono tracking-widest text-white/45">
             CAPABILITIES
           </h2>
@@ -389,6 +389,13 @@ export default function Skills() {
                     <stop offset="0%" stopColor={ACCENT} stopOpacity="0.55" />
                     <stop offset="100%" stopColor={ACCENT} stopOpacity="0" />
                   </radialGradient>
+                  <filter id="capPolyShadow" x="-30%" y="-30%" width="160%" height="160%">
+                    <feGaussianBlur stdDeviation="1.6" result="blur" />
+                    <feMerge>
+                      <feMergeNode in="blur" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
                 </defs>
 
                 <circle cx="0" cy="0" r="38" fill="url(#capHubGlow)" />
@@ -401,9 +408,10 @@ export default function Skills() {
                         `${n.ux * LINE_END * (n.level / 100)},${n.uy * LINE_END * (n.level / 100)}`,
                     )
                     .join(" ")}
-                  fill={`${ACCENT}10`}
-                  stroke={`${ACCENT}50`}
-                  strokeWidth="0.55"
+                  fill={`${ACCENT}1f`}
+                  stroke={`${ACCENT}66`}
+                  strokeWidth="0.6"
+                  filter="url(#capPolyShadow)"
                 />
 
                 {nodes.map((node, i) => {
@@ -487,8 +495,8 @@ export default function Skills() {
                         data-orbit-node
                         onMouseEnter={() => setHovered(i)}
                         onMouseLeave={() => setHovered(null)}
-                        className="relative cursor-pointer"
-                        style={{ width: dotSize, height: dotSize }}
+                        className="relative"
+                        style={{ width: dotSize, height: dotSize, cursor: "default" }}
                       >
                         <span
                           className="absolute inset-0 rounded-full pointer-events-none"

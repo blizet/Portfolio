@@ -28,7 +28,7 @@ export default function Projects() {
   }, []);
 
   // Uniform rectangular card size - wider than tall.
-  const CARD_HEIGHT = "h-[170px] md:h-[200px]";
+  const CARD_HEIGHT = "h-[140px] sm:h-[170px] md:h-[200px]";
 
   return (
     <section
@@ -46,92 +46,139 @@ export default function Projects() {
         </div>
 
         <div className="grid lg:grid-cols-5 gap-10 lg:gap-12 items-stretch relative">
-          <aside className="lg:col-span-2 lg:sticky lg:top-20 relative z-20">
-            <p
-              className="font-mono text-xs tracking-[0.2em] mb-4"
-              style={{ color: ACCENT }}
-            >
-              ACTIVE PROJECT / {activeProject.category}
-            </p>
-
-            <div
-              key={activeProject.id}
-              className="animate-[reveal-up_420ms_cubic-bezier(0.16,1,0.3,1)_both]"
-            >
-              <div className="flex items-center gap-4">
+          <aside className="lg:col-span-2 relative z-20">
+            <div className="lg:sticky lg:top-24">
+              <div
+                key={activeProject.id}
+                className="relative overflow-hidden rounded-3xl flex flex-col px-2 py-4 md:px-4 md:py-6 lg:px-6 lg:py-10 lg:h-[760px] animate-[reveal-up_500ms_cubic-bezier(0.16,1,0.3,1)_both]"
+              >
                 <div
-                  className="relative shrink-0 h-12 w-12 md:h-14 md:w-14 rounded-xl border border-white/12 bg-white/[0.04] overflow-hidden"
-                  style={{ boxShadow: `0 0 0 1px ${ACCENT}18, 0 6px 18px -8px ${ACCENT}55` }}
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0"
+                  style={{
+                    background: `radial-gradient(circle at 85% 18%, ${ACCENT}26, transparent 55%), radial-gradient(circle at 12% 88%, ${ACCENT}14, transparent 50%)`,
+                  }}
+                />
+
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute -right-4 md:-right-6 -bottom-10 md:-bottom-16 select-none leading-[0.78]"
+                  style={{
+                    fontFamily: "Georgia, 'Times New Roman', serif",
+                    fontSize: "clamp(11rem, 26vw, 26rem)",
+                    fontStyle: "italic",
+                    fontWeight: 500,
+                    color: "transparent",
+                    WebkitTextStroke: `1px ${ACCENT}33`,
+                    letterSpacing: "-0.05em",
+                  }}
                 >
-                  <Image
-                    src={activeProject.logo}
-                    alt={`${activeProject.title} logo`}
-                    fill
-                    sizes="56px"
-                    className="object-contain p-2"
-                  />
-                </div>
-                <h3 className="text-3xl md:text-4xl font-semibold tracking-tight text-white">
-                  {activeProject.title}
-                </h3>
-              </div>
+                  {String(
+                    projects.findIndex((p) => p.id === activeProject.id) + 1,
+                  ).padStart(2, "0")}
+                </span>
 
-              <p className="mt-3 text-lg md:text-xl text-white/80">{activeProject.role}</p>
-              <p className="mt-2 text-sm font-mono text-white/55 tracking-wide">
-                {activeProject.timeline} &middot; {activeProject.client}
-              </p>
-
-              <p className="mt-6 text-white/72 leading-relaxed max-w-[44ch]">
-                {activeProject.context}
-              </p>
-
-              <div className="mt-7 grid grid-cols-2 gap-3">
-                {activeProject.highlights.slice(0, 4).map((h, idx) => (
-                  <div
-                    key={`${h.label}-${idx}`}
-                    className="rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-3 opacity-0 animate-[reveal-up_520ms_cubic-bezier(0.16,1,0.3,1)_forwards]"
-                    style={{ animationDelay: `${idx * 80}ms` }}
-                  >
-                    <p
-                      className="text-xl md:text-2xl font-bold tracking-tight"
-                      style={{ color: ACCENT }}
-                    >
-                      {h.value}
-                    </p>
-                    <p className="mt-1 text-xs text-white/60 leading-tight">{h.label}</p>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-7 flex flex-wrap gap-2.5">
-                {activeProject.tech.map((tech, index) => (
+                <div className="relative flex items-center gap-3">
                   <span
-                    key={tech}
-                    className="text-xs font-mono rounded-full border px-3 py-1.5 opacity-0 animate-[reveal-up_480ms_cubic-bezier(0.16,1,0.3,1)_forwards]"
+                    className="inline-block h-1.5 w-1.5 rounded-full"
+                    style={{ background: ACCENT, boxShadow: `0 0 10px ${ACCENT}` }}
+                  />
+                  <span className="font-mono text-[10px] tracking-[0.32em] text-white/65">
+                    ACTIVE / {activeProject.category}
+                  </span>
+                  <span className="h-px flex-1 bg-white/15" />
+                  <span className="font-mono text-[10px] tracking-[0.28em] text-white/45">
+                    {activeProject.year}
+                  </span>
+                </div>
+
+                <div className="relative flex-1 flex flex-col justify-center mt-10 md:mt-14 lg:mt-0">
+                  <div
+                    className="relative shrink-0 h-12 w-12 md:h-14 md:w-14 rounded-xl overflow-hidden flex items-center justify-center mb-7 md:mb-9"
                     style={{
-                      animationDelay: `${280 + index * 50}ms`,
-                      color: ACCENT,
-                      borderColor: `${ACCENT}77`,
-                      backgroundColor: `${ACCENT}14`,
+                      borderWidth: 1,
+                      borderStyle: "solid",
+                      borderColor: `${ACCENT}55`,
+                      background: "rgba(255,255,255,0.04)",
+                      boxShadow: `0 8px 22px -8px ${ACCENT}66`,
                     }}
                   >
-                    {tech}
-                  </span>
-                ))}
-              </div>
+                    <Image
+                      src={activeProject.logo}
+                      alt={`${activeProject.title} logo`}
+                      fill
+                      sizes="56px"
+                      className="object-contain p-2"
+                    />
+                  </div>
 
-              <Link
-                href={`/archive/${activeProject.slug}`}
-                className="inline-flex mt-8 items-center gap-2 text-sm font-mono tracking-wide text-white/75 hover:text-white transition-colors"
-              >
-                Open case study
-                <span aria-hidden>-&gt;</span>
-              </Link>
+                  <h3 className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-white leading-[0.95]">
+                    {activeProject.title}
+                  </h3>
+
+                  <p
+                    className="mt-5 md:mt-6 text-base md:text-lg text-white/75 leading-relaxed max-w-md"
+                    style={{
+                      display: "-webkit-box",
+                      WebkitLineClamp: 3,
+                      WebkitBoxOrient: "vertical",
+                      overflow: "hidden",
+                    }}
+                  >
+                    {activeProject.description}
+                  </p>
+                </div>
+
+                <div className="relative mt-10 md:mt-12 flex items-center justify-between gap-4">
+                  <Link
+                    href={`/archive/${activeProject.slug}`}
+                    aria-label={`Open case study for ${activeProject.title}`}
+                    className="group/cta inline-flex items-center gap-3 rounded-full border bg-white/[0.04] backdrop-blur-md pl-5 pr-3 py-2.5 transition-all duration-300"
+                    style={{ borderColor: `${ACCENT}88` }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = ACCENT;
+                      e.currentTarget.style.background = `${ACCENT}1f`;
+                      e.currentTarget.style.boxShadow = `0 0 28px ${ACCENT}55`;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = `${ACCENT}88`;
+                      e.currentTarget.style.background = "rgba(255,255,255,0.04)";
+                      e.currentTarget.style.boxShadow = "none";
+                    }}
+                  >
+                    <span className="font-mono text-[11px] tracking-[0.28em] uppercase text-white">
+                      Open Case Study
+                    </span>
+                    <span
+                      aria-hidden
+                      className="inline-flex items-center justify-center h-7 w-7 rounded-full transition-transform duration-300 group-hover/cta:translate-x-0.5"
+                      style={{ background: ACCENT, color: "#0a0c14" }}
+                    >
+                      <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                        <path
+                          d="M2 6h7M6 3l3 3-3 3"
+                          stroke="currentColor"
+                          strokeWidth="1.6"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </span>
+                  </Link>
+
+                  <span className="font-mono text-[10px] tracking-[0.28em] text-white/35 hidden sm:inline">
+                    {String(
+                      projects.findIndex((p) => p.id === activeProject.id) + 1,
+                    ).padStart(2, "0")}{" "}
+                    / {String(projects.length).padStart(2, "0")}
+                  </span>
+                </div>
+              </div>
             </div>
           </aside>
 
           <div className="lg:col-span-3 self-stretch relative z-10 isolate">
-            <div className="relative h-[560px] md:h-[760px] overflow-hidden rounded-3xl">
+            <div className="relative h-[440px] sm:h-[560px] md:h-[760px] overflow-hidden rounded-3xl">
               <div className="pointer-events-none absolute inset-x-0 top-0 h-20 z-30 bg-gradient-to-b from-[#0a0c14] to-transparent" />
               <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 z-30 bg-gradient-to-t from-[#0a0c14] to-transparent" />
 
@@ -177,8 +224,13 @@ export default function Projects() {
                                       : isHovered
                                         ? "scale(1.02) rotate(0.4deg)"
                                         : "scale(1)",
-                                    filter:
-                                      hoveredId && !isHovered ? "brightness(0.78) saturate(0.85)" : "none",
+                                    filter: isHovered
+                                      ? "brightness(1.1)"
+                                      : hoveredId
+                                        ? "brightness(0.78) saturate(0.85)"
+                                        : isActive
+                                          ? "brightness(1)"
+                                          : "brightness(0.92)",
                                   }}
                                 >
                                   <Image
@@ -186,19 +238,18 @@ export default function Projects() {
                                     alt={item.title}
                                     fill
                                     sizes="(max-width: 768px) 50vw, 28vw"
-                                    className={`object-cover transition-all duration-300 ${
+                                    className={`object-cover transition-transform duration-300 ${
                                       isActive ? "scale-105" : "scale-100"
-                                    } ${isHovered ? "brightness-110" : "brightness-75"}`}
+                                    }`}
                                   />
-                                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent" />
-                                  <div className="absolute left-3 right-3 bottom-3">
-                                    <p className="text-[11px] font-mono tracking-wide text-white/70">
-                                      {item.category}
-                                    </p>
-                                    <p className="text-sm md:text-base font-semibold text-white">
-                                      {item.title}
-                                    </p>
-                                  </div>
+                                  <div
+                                    className="absolute inset-0 transition-opacity duration-300 pointer-events-none"
+                                    style={{
+                                      opacity: isActive ? 0 : isHovered ? 0 : 0.18,
+                                      background:
+                                        "linear-gradient(180deg, rgba(0,0,0,0) 60%, rgba(0,0,0,0.45) 100%)",
+                                    }}
+                                  />
                                 </button>
                               );
                             })}

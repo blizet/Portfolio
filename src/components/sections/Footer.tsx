@@ -1,10 +1,11 @@
 export default function Footer() {
+  const year = new Date().getFullYear();
   return (
     <footer className="py-12 px-6 md:px-12 lg:px-20 bg-[#0a0c14] text-white border-t border-white/10">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <p className="text-xs font-mono text-white/45 text-center md:text-left tracking-wide">
-            (c) 2025 ANJALI JHA - ALL RIGHTS RESERVED
+            (c) {year} ANJALI JHA - ALL RIGHTS RESERVED
           </p>
           <div className="flex items-center gap-5 md:gap-7">
             <a

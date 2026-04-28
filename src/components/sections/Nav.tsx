@@ -13,12 +13,12 @@ const sectionLinks = [
 
 const trackedSections: { id: string; label: string; parent: string }[] = [
   { id: "hero", label: "HOME", parent: "hero" },
-  { id: "about", label: "NARRATIVE", parent: "about" },
+  { id: "about", label: "ABOUT", parent: "about" },
   { id: "work", label: "SELECTED WORK", parent: "work" },
   { id: "experience", label: "EXPERIENCE", parent: "work" },
-  { id: "creative", label: "CREATIVE PURSUITS", parent: "work" },
   { id: "skills", label: "CAPABILITIES", parent: "work" },
   { id: "awards", label: "RECOGNITION", parent: "work" },
+  { id: "creative", label: "CREATIVE PURSUITS", parent: "work" },
   { id: "faq", label: "FREQUENTLY ASKED", parent: "contact" },
   { id: "contact", label: "GET IN TOUCH", parent: "contact" },
 ];
@@ -75,7 +75,7 @@ export default function Nav() {
 
   return (
     <nav className="fixed inset-0 pointer-events-none z-50">
-      <div className="absolute top-4 left-4 md:top-6 md:left-6 pointer-events-auto">
+      <div className="absolute top-4 left-4 md:top-6 md:left-6 pointer-events-auto hidden sm:block">
         <div className="rounded-full border border-white/15 bg-black/45 backdrop-blur-md px-3.5 py-2 flex items-center gap-2.5">
           <span
             className="inline-block h-1.5 w-1.5 rounded-full"
@@ -94,7 +94,7 @@ export default function Nav() {
       </div>
 
       <div className="absolute top-4 left-1/2 -translate-x-1/2 pointer-events-auto">
-        <div className="rounded-full border border-white/20 bg-black/45 backdrop-blur-md px-4 py-2 font-mono text-xs text-white/90 tracking-wide flex items-center gap-2.5">
+        <div className="rounded-full border border-white/20 bg-black/45 backdrop-blur-md px-3 sm:px-4 py-1.5 sm:py-2 font-mono text-[11px] sm:text-xs text-white/90 tracking-wide flex items-center gap-2 sm:gap-2.5">
           <span
             className="inline-block h-1.5 w-1.5 rounded-full"
             style={{ backgroundColor: ACCENT, boxShadow: `0 0 8px ${ACCENT}` }}

@@ -5,10 +5,10 @@ import NameLoader from "@/components/loader/NameLoader";
 import Nav from "@/components/sections/Nav";
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
-import Experience from "@/components/sections/Experience";
 import Projects from "@/components/sections/Projects";
-import Creative from "@/components/sections/Creative";
+import Experience from "@/components/sections/Experience";
 import Skills from "@/components/sections/Skills";
+import Creative from "@/components/sections/Creative";
 import Awards from "@/components/sections/Awards";
 import Faq from "@/components/sections/Faq";
 import Contact from "@/components/sections/Contact";
@@ -80,9 +80,9 @@ export default function Home() {
         <About />
         <Projects />
         <Experience />
-        <Creative />
         <Skills />
         <Awards />
+        <Creative />
         <Faq />
         <Contact />
         <Footer />

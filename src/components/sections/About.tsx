@@ -1,368 +1,158 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
+import { useState } from "react";
+import { useScrollReveal } from "@/lib/useScrollReveal";
 
 const ACCENT = "#8b5cf6";
 
-type LenisLike = {
-  scrollTo: (target: number | string | HTMLElement, options?: { duration?: number; offset?: number; immediate?: boolean }) => void;
-};
-
-type Anchor = { label: string; href: string };
-
-type StoryChapter = {
-  phase: string;
-  marker: string;
-  title: string;
-  lines: string[];
-  anchor?: Anchor;
-};
-
-const chapters: StoryChapter[] = [
-  {
-    phase: "01",
-    marker: "BEGINNING",
-    title: "Exploration",
-    lines: [
-      "I started my journey in my first and second year by simply exploring technology.",
-      "Building, experimenting, and understanding what truly excites me in this space.",
-    ],
-  },
-  {
-    phase: "02",
-    marker: "TURNING POINT",
-    title: "Smart India Hackathon",
-    lines: [
-      "That exploration turned structured when I reached the finals of the Smart India Hackathon.",
-      "I saw, for the first time, how ideas evolve when placed under real-world constraints.",
-    ],
-    anchor: { label: "Smart India Hackathon", href: "#experience" },
-  },
-  {
-    phase: "03",
-    marker: "FIRST EXPOSURE",
-    title: "Production at last",
-    lines: [
-      "This momentum led me to my first government internship.",
-      "I transitioned from learning systems to actually building them in production.",
-    ],
-  },
-  {
-    phase: "04",
-    marker: "SCALING",
-    title: "Working in parallel",
-    lines: [
-      "By the end of my third year I was working across multiple internships.",
-      "Each one refined how I approach systems, scalability and execution.",
-    ],
-  },
-  {
-    phase: "05",
-    marker: "OPEN SOURCE",
-    title: "GSoC at AOSSIE",
-    lines: [
-      "Open source became a defining shift in my journey.",
-      "It led to GSoC 2025 at AOSSIE, collaborating on distributed systems with global contributors.",
-    ],
-    anchor: { label: "GSoC 2025", href: "#awards" },
-  },
-  {
-    phase: "06",
-    marker: "STARTUP + PIVOT",
-    title: "Building, then re-building",
-    lines: [
-      "With a government grant, I started a startup rooted in a blockchain-based idea.",
-      "As the problem evolved, we pivoted - learning that adaptability matters as much as execution.",
-    ],
-    anchor: { label: "Selected Work", href: "#work" },
-  },
-  {
-    phase: "07",
-    marker: "NOW",
-    title: "Building with intent",
-    lines: [
-      "Hackathons, internships, open source and startup building all converged into one thread.",
-      "Learning how to think in systems and ship with intent.",
-    ],
-  },
+const QUICK_FACTS = [
+  { label: "BASED IN", value: "Mumbai, India" },
+  { label: "FOCUS", value: "Web3 / Full-Stack / AI" },
+  { label: "STATUS", value: "Open to roles + collabs" },
+  { label: "EDUCATION", value: "Computer Engineering" },
 ];
 
-function AnchorPill({ label, href }: Anchor) {
-  return (
-    <a
-      href={href}
-      className="inline-flex items-center rounded-full border px-3 py-1 text-[0.7rem] font-mono tracking-wide transition-all duration-300 hover:-translate-y-0.5 mt-1"
-      style={{
-        borderColor: `${ACCENT}66`,
-        color: "#ede9fe",
-        backgroundColor: "rgba(139,92,246,0.07)",
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.boxShadow = `0 0 18px ${ACCENT}40`;
-        e.currentTarget.style.borderColor = `${ACCENT}cc`;
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.boxShadow = "none";
-        e.currentTarget.style.borderColor = `${ACCENT}66`;
-      }}
-    >
-      {label}
-    </a>
-  );
-}
+const STATS = [
+  { value: "7+", label: "Projects shipped" },
+  { value: "GSoC '25", label: "AOSSIE contributor" },
+  { value: "5+", label: "Roles & internships" },
+  { value: "Mentor", label: "AOSSIE OSS" },
+];
+
+const HIGHLIGHTS = [
+  "GSoC 2025 @ AOSSIE - Built Fate Protocol",
+  "SDE @ Kridinify Tech - APIs, dashboards, automation",
+  "Apprenticeship @ Stability Nexus - Clowder + CATs",
+  "R&D @ CDAC India - Email security pipelines",
+  "AI voice bot @ EOSGlobe - Azure TTS + Mistral AI",
+  "Mentor @ AOSSIE - Reviews + onboarding",
+];
 
 export default function About() {
-  const sectionRef = useRef<HTMLElement>(null);
-
-  const skipNarrative = useCallback(() => {
-    const target = document.getElementById("work");
-    if (!target) return;
-    const lenis = (window as unknown as { lenis?: LenisLike }).lenis;
-    if (lenis && typeof lenis.scrollTo === "function") {
-      lenis.scrollTo(target, { offset: 0, duration: 1.1 });
-      return;
-    }
-    target.scrollIntoView({ behavior: "smooth", block: "start" });
-  }, []);
-
-  useEffect(() => {
-    if (!sectionRef.current) return;
-    const mm = gsap.matchMedia();
-
-    mm.add("(min-width: 768px)", () => {
-      const root = sectionRef.current!;
-      const stage = root.querySelector<HTMLElement>("[data-stage]");
-      const progressBar = root.querySelector<HTMLElement>("[data-progress-bar]");
-      if (!stage) return;
-
-      const tl = gsap.timeline({
-        defaults: { ease: "power2.out" },
-        scrollTrigger: {
-          trigger: stage,
-          start: "top top",
-          end: `+=${chapters.length * 80}%`,
-          pin: true,
-          scrub: 1.1,
-          anticipatePin: 1,
-        },
-      });
-
-      if (progressBar) {
-        gsap.to(progressBar, {
-          scaleX: 1,
-          ease: "none",
-          scrollTrigger: {
-            trigger: stage,
-            start: "top top",
-            end: `+=${chapters.length * 80}%`,
-            scrub: true,
-          },
-        });
-      }
-
-      chapters.forEach((_, i) => {
-        const cardSel = `[data-chapter='${i}']`;
-        const linesSel = `[data-chapter='${i}'] [data-line]`;
-        const headSel = `[data-chapter='${i}'] [data-head]`;
-        const dotSel = `[data-progress-dot='${i}']`;
-
-        tl.addLabel(`enter-${i}`)
-          .fromTo(cardSel, { opacity: 0 }, { opacity: 1, duration: 0.25 })
-          .fromTo(headSel, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.35 }, "<")
-          .fromTo(
-            linesSel,
-            { opacity: 0, y: 28 },
-            { opacity: 1, y: 0, duration: 0.6, stagger: 0.18 },
-            "<+0.08",
-          )
-          .to(dotSel, { backgroundColor: ACCENT, width: 36, duration: 0.2 }, "<");
-
-        tl.to({}, { duration: 0.45 });
-
-        if (i < chapters.length - 1) {
-          tl.to(cardSel, { opacity: 0, y: -18, duration: 0.3 });
-          tl.to(dotSel, { backgroundColor: "rgba(255,255,255,0.18)", width: 24, duration: 0.2 }, "<");
-        }
-      });
-    });
-
-    mm.add("(max-width: 767px)", () => {
-      const root = sectionRef.current!;
-      gsap.utils.toArray<HTMLElement>("[data-chapter]", root).forEach((el) => {
-        gsap.set(el, { position: "relative", opacity: 0 });
-        gsap.to(el, {
-          opacity: 1,
-          y: 0,
-          duration: 0.9,
-          ease: "power3.out",
-          scrollTrigger: { trigger: el, start: "top 80%" },
-        });
-        gsap.fromTo(
-          el.querySelectorAll("[data-line], [data-head]"),
-          { opacity: 0, y: 18 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.7,
-            stagger: 0.12,
-            ease: "power3.out",
-            scrollTrigger: { trigger: el, start: "top 78%" },
-          },
-        );
-      });
-    });
-
-    return () => mm.revert();
-  }, []);
+  const sectionRef = useScrollReveal<HTMLElement>({ y: 24, stagger: 0.06 });
+  const [expanded, setExpanded] = useState(false);
 
   return (
     <section
       id="about"
       ref={sectionRef}
-      data-no-snap
-      className="relative bg-[#0a0c14] text-white"
+      className="relative py-24 md:py-32 px-6 md:px-12 lg:px-20 bg-[radial-gradient(circle_at_18%_22%,rgba(139,92,246,0.12),transparent_45%),radial-gradient(circle_at_82%_78%,rgba(139,92,246,0.06),transparent_50%)] text-white"
     >
-      <div
-        data-stage
-        className="relative h-screen overflow-hidden flex items-center px-6 md:px-12 lg:px-20"
-      >
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(circle at 22% 18%, rgba(139,92,246,0.16), transparent 45%), radial-gradient(circle at 82% 82%, rgba(139,92,246,0.08), transparent 50%)",
-          }}
-        />
-        <div
-          className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#0a0c14] to-transparent"
-          aria-hidden
-        />
-        <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#0a0c14] to-transparent"
-          aria-hidden
-        />
-
-        <div className="absolute top-8 md:top-10 left-0 right-0 z-10">
-          <div className="max-w-3xl mx-auto px-6 md:px-0 flex items-baseline gap-4">
-            <span className="font-mono text-sm text-white/45">002</span>
-            <h2 className="font-mono text-sm tracking-widest text-white/45">NARRATIVE</h2>
-            <span className="flex-1 h-px bg-white/15" />
-          </div>
+      <div className="max-w-5xl mx-auto">
+        <div className="flex items-baseline gap-4 mb-10 md:mb-14" data-reveal>
+          <span className="font-mono text-sm text-white/45">002</span>
+          <h2 className="text-sm font-mono tracking-widest text-white/45">ABOUT</h2>
+          <div className="flex-1 h-px bg-white/15" />
         </div>
 
-        <div className="absolute top-6 md:top-8 right-6 md:right-12 z-20">
-          <button
-            type="button"
-            onClick={skipNarrative}
-            aria-label="Skip narrative and jump to selected work"
-            className="group inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/40 backdrop-blur-md px-3.5 py-1.5 font-mono text-[10px] tracking-[0.28em] text-white/65 hover:text-white transition-all duration-300"
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = `${ACCENT}88`;
-              e.currentTarget.style.boxShadow = `0 0 18px ${ACCENT}40`;
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)";
-              e.currentTarget.style.boxShadow = "none";
-            }}
-          >
-            <span>SKIP NARRATIVE</span>
-            <span
-              aria-hidden
-              className="text-base leading-none transition-transform duration-300 group-hover:translate-x-0.5"
-              style={{ color: ACCENT }}
+        <p
+          data-reveal
+          className="font-mono text-xs tracking-[0.32em] mb-5"
+          style={{ color: ACCENT }}
+        >
+          / HI, I&apos;M ANJALI
+        </p>
+
+        <h3
+          data-reveal
+          className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.05] max-w-4xl mb-8 md:mb-10"
+        >
+          Software developer building{" "}
+          <span style={{ color: ACCENT }}>web3</span>, full-stack
+          and <span style={{ color: ACCENT }}>AI</span> products.
+        </h3>
+
+        <div className="grid lg:grid-cols-[1.4fr_1fr] gap-8 lg:gap-14">
+          <div className="space-y-5" data-reveal>
+            <p className="text-base md:text-lg text-white/72 leading-relaxed max-w-2xl">
+              I work across product engineering, smart contracts, and AI integrations - shipping production code, learning in the open, and building tools that respect the user&apos;s attention.
+            </p>
+            <p className="text-base md:text-lg text-white/72 leading-relaxed max-w-2xl">
+              Most recently I built Fate Protocol during GSoC 2025 with AOSSIE, lead full-stack engineering at Kridinify Tech, and designed and built Extraction Esports.
+            </p>
+
+            <div
+              className="grid transition-[grid-template-rows,opacity] duration-500 ease-out"
+              style={{
+                gridTemplateRows: expanded ? "1fr" : "0fr",
+                opacity: expanded ? 1 : 0,
+              }}
             >
-              &rarr;
-            </span>
-          </button>
-        </div>
+              <div className="overflow-hidden">
+                <div className="pt-3 max-w-2xl">
+                  <p className="font-mono text-[10px] tracking-[0.28em] text-white/45 mb-4">
+                    / SELECTED HIGHLIGHTS
+                  </p>
+                  <ul className="space-y-2.5">
+                    {HIGHLIGHTS.map((line) => (
+                      <li
+                        key={line}
+                        className="flex items-start gap-3 text-sm md:text-base text-white/70 leading-relaxed"
+                      >
+                        <span
+                          className="mt-2 h-px w-3.5 shrink-0"
+                          style={{ background: ACCENT }}
+                        />
+                        <span>{line}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
 
-        <div className="relative z-10 mx-auto w-full max-w-3xl">
-          <div className="relative grid">
-            {chapters.map((c, i) => (
-              <article
-                key={c.phase}
-                data-chapter={i}
-                className="col-start-1 row-start-1 will-change-[opacity,transform]"
-                style={{ opacity: i === 0 ? 1 : 0 }}
+            <button
+              type="button"
+              onClick={() => setExpanded((v) => !v)}
+              className="mt-2 inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.28em] text-white/65 hover:text-white transition-colors"
+              aria-expanded={expanded}
+            >
+              {expanded ? "SHOW LESS" : "READ MORE"}
+              <span
+                aria-hidden
+                className="text-base leading-none transition-transform duration-300"
+                style={{
+                  color: ACCENT,
+                  transform: expanded ? "rotate(180deg)" : "none",
+                }}
               >
-                <div data-head className="mb-8 md:mb-10 flex items-center gap-3">
-                  <span
-                    className="font-mono text-xs tracking-[0.32em]"
+                {expanded ? "\u2212" : "\u2192"}
+              </span>
+            </button>
+          </div>
+
+          <aside className="space-y-4" data-reveal>
+            <div className="grid grid-cols-2 gap-3">
+              {QUICK_FACTS.map((fact) => (
+                <div
+                  key={fact.label}
+                  className="rounded-xl border border-white/10 bg-white/[0.03] backdrop-blur-sm px-4 py-4"
+                >
+                  <p className="font-mono text-[9px] tracking-[0.28em] text-white/45 mb-1.5">
+                    {fact.label}
+                  </p>
+                  <p className="text-sm text-white/85 leading-snug">{fact.value}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              {STATS.map((stat) => (
+                <div
+                  key={stat.label}
+                  className="rounded-xl border border-white/10 bg-white/[0.03] backdrop-blur-sm px-4 py-4"
+                >
+                  <p
+                    className="text-2xl font-bold tracking-tight"
                     style={{ color: ACCENT }}
                   >
-                    {c.phase} / {String(chapters.length).padStart(2, "0")}
-                  </span>
-                  <span className="h-px w-10 bg-white/25" />
-                  <span className="font-mono text-[10px] tracking-[0.32em] text-white/55">
-                    {c.marker}
-                  </span>
+                    {stat.value}
+                  </p>
+                  <p className="mt-1 text-xs text-white/55 leading-tight">{stat.label}</p>
                 </div>
-
-                <h3
-                  data-head
-                  className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.02] mb-8 md:mb-10"
-                >
-                  {c.title}
-                </h3>
-
-                <div className="space-y-4 max-w-2xl">
-                  {c.lines.map((line, idx) => (
-                    <p
-                      key={idx}
-                      data-line
-                      className="text-lg md:text-xl lg:text-[1.4rem] text-white/78 leading-[1.55] tracking-[0.005em]"
-                    >
-                      {line}
-                    </p>
-                  ))}
-                </div>
-
-                {c.anchor && (
-                  <div data-line className="mt-8">
-                    <AnchorPill {...c.anchor} />
-                  </div>
-                )}
-              </article>
-            ))}
-          </div>
-        </div>
-
-        <div className="absolute bottom-10 left-0 right-0 z-10">
-          <div className="max-w-3xl mx-auto px-6 md:px-0">
-            <div className="flex items-center gap-2.5">
-              {chapters.map((_, i) => (
-                <span
-                  key={i}
-                  data-progress-dot={i}
-                  className="h-1 rounded-full transition-colors"
-                  style={{
-                    width: i === 0 ? 36 : 24,
-                    backgroundColor: i === 0 ? ACCENT : "rgba(255,255,255,0.18)",
-                  }}
-                />
               ))}
-              <span className="ml-3 font-mono text-[10px] tracking-[0.32em] text-white/40">
-                SCROLL TO READ
-              </span>
             </div>
-            <div className="mt-3 h-px w-full bg-white/8 overflow-hidden">
-              <span
-                data-progress-bar
-                className="block h-full origin-left"
-                style={{
-                  width: "100%",
-                  transform: "scaleX(0)",
-                  background: `linear-gradient(90deg, ${ACCENT}, ${ACCENT}55)`,
-                }}
-              />
-            </div>
-          </div>
+          </aside>
         </div>
       </div>
     </section>
