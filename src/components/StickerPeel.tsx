@@ -16,7 +16,7 @@ export default function StickerPeel() {
       <a
         href={`${basePath}/cartoon`}
         aria-label="Open cartoon mode"
-        title="psst — there's a notebook behind this"
+        title="psst, there's a notebook behind this"
         style={{ pointerEvents: "auto" }}
       >
         <svg viewBox="0 0 110 110" xmlns="http://www.w3.org/2000/svg">

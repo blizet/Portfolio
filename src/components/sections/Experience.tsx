@@ -267,7 +267,11 @@ export default function Experience() {
                           </span>
                         </div>
                         <p className="mt-1 text-base md:text-[1.12rem] text-white/75">{exp.title}</p>
-                        <p className="mt-2 inline-flex items-center gap-2 font-mono text-[10px] md:text-[11px] tracking-[0.16em] uppercase text-white/52">
+                        <p
+                          className={`mt-2 inline-flex items-center gap-2 font-mono text-[10px] md:text-[11px] tracking-[0.16em] uppercase ${
+                            isLight ? "text-black/55" : "text-white/52"
+                          }`}
+                        >
                           <span
                             aria-hidden
                             className="inline-block h-1.5 w-1.5 rounded-full"

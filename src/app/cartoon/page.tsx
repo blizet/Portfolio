@@ -69,7 +69,7 @@ function MobileFallback() {
           style={{ top: -14, left: "70%", transform: "translateX(-50%) rotate(6deg)" }}
         />
         <p className="font-marker text-[11px] tracking-[0.22em] uppercase text-amber-900/70 mb-2">
-          psst — desktop only
+          psst, desktop only
         </p>
         <h1 className="font-hand text-4xl text-amber-950 leading-tight mb-3">
           this little notebook is best on a bigger screen
